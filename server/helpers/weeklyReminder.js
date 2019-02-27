@@ -36,6 +36,7 @@ module.exports = {
           queue.process('email-reminder', (job,done) => {
             console.log(job.data);
             mailer(job.data.email)
+            done()
             })
         })
         .catch(function(err) {
