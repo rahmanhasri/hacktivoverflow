@@ -1,4 +1,5 @@
 var nodemailer = require("nodemailer");
+require('dotenv')
 
 function mailNotifications(targetEmail) {
 
@@ -6,7 +7,7 @@ function mailNotifications(targetEmail) {
       service: "gmail",
       auth: {
           user: "underflowmaman@gmail.com",
-          pass: 'Kicksome4ss.'
+          pass: process.env.EMAILPASS,
       }
   });
   
