@@ -2,6 +2,7 @@ const User = require('../models/user')
 const Question = require('../models/question')
 const { tokenDecoder } = require('../helpers/jwt')
 const Answer = require('../models/answer')
+const Tag = require('../models/tag')
 
 module.exports = {
   isLogin: function(req, res, next) {
@@ -87,5 +88,38 @@ module.exports = {
         .status(500)
         .json(err)
     });
+  },
+
+  tagIdGenerator: function(req, res, next) {
+  
+    req.body.tags = req.body.tags.map(tag => tag.text)
+    let tagPromises = []
+    let output = []
+    // req.body.tags = ['js','react', 'vue']
+    console.log(req.body.tags,'======================================')
+    req.body.tags.forEach( tag => {
+      tagPromises.push(
+        new Promise ((resolve, reject) => {
+          Tag.findOneAndUpdate({ name: tag }, { $set: { name: tag }}, { upsert: true, new: true }, function(err, doc) {
+            resolve(doc)
+          })
+        })
+      )
+    })
+  
+    Promise.all(tagPromises)
+      .then(function(tags) {
+        console.log(tags,'==================================|||||')
+        tags.forEach( tag => {
+          output.push(tag._id)
+        })
+        req.body.tags = output
+        console.log(req.body.tags)
+        next()
+      })
+      .catch(function(err) {
+        console.log(err)
+        next()
+      })
   },
 }

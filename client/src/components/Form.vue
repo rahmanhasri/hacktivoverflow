@@ -10,9 +10,11 @@
       <vue-editor v-model="content" :editorToolbar="customToolbar"></vue-editor>
     </div>
     <div class="field" v-if="editor === 'question'">
-      <div class="control">
-        <input class="input" type="text" placeholder="Tags" v-model="tags">
-      </div>
+      <vue-tags-input
+        v-model="tag"
+        :tags="tags"
+        @tags-changed="newTags => tags = newTags"
+      />
     </div>
     <div class="field">
       <!-- update question -->
@@ -52,18 +54,20 @@
 import swal from 'sweetalert';
 import { VueEditor } from 'vue2-editor';
 import user from '@/api/underflowUser';
+import VueTagsInput from '@johmun/vue-tags-input';
 
 export default {
   name: 'form-component',
   components: {
-    VueEditor,
+    VueTagsInput, VueEditor,
   },
   props: ['edit-post', 'editor', 'edit'],
   data() {
     return {
       title: this.editPost.title || '',
       content: this.editPost.content || '',
-      tags: '',
+      tag: '',
+      tags: [],
       customToolbar: [
         ['bold', 'italic', 'underline'],
         [{ list: 'ordered' }, { list: 'bullet' }],
@@ -75,7 +79,8 @@ export default {
     clearForm() {
       this.title = '';
       this.content = '';
-      this.tags = '';
+      this.tags = [];
+      this.tag = '';
     },
     dismissEditor() {
       this.$emit('dismiss');
@@ -106,14 +111,14 @@ export default {
         })
           .then(({ data }) => {
             console.log(data.data);
-            this.$store.commit('addQuestion', data.data);
+            // this.$store.commit('addQuestion', data.data);
             this.$store.commit('loading', false);
             swal('Your question submitted', {
               timer: 1750,
               button: false,
             });
-            this.$router.replace('/');
             this.clearForm();
+            this.$router.push('/');
           })
           .catch(({ response }) => {
             console.log(response);

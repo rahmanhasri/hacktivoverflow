@@ -2,6 +2,8 @@ const Answer = require('../models/answer');
 const Question = require('../models/question');
 const User = require('../models/user');
 const { validationMessage } = require('../helpers/validation');
+const mongoose = require('mongoose');
+const Tag = require('../models/tag');
 
 module.exports = {
   create: function(req, res) { // create
@@ -10,17 +12,20 @@ module.exports = {
       userId: req.headers.id,
       title: req.body.title,
       content: req.body.content,
-      created_at: new Date(),
+      tags: req.body.tags,
     }
   
     let newQuestion = null
     Question.create(input)
       .then(function(question) {
-        newQuestion = question
-        return User.findByIdAndUpdate(req.headers.id,{  $push: { 'posts': question } })
+        newQuestion = question;
+        return User.findByIdAndUpdate(req.headers.id,{  $push: { 'posts': question } });
       })
       .then(function() {
-        return newQuestion.populate('userId').execPopulate()
+        return Tag.updateMany({ _id: { $in: req.body.tags }}, { $push: { 'questions': newQuestion._id }});
+      })
+      .then(function() {
+        return newQuestion.populate('userId').populate('tags').execPopulate()
       })
       .then(function(question) {
         res
@@ -37,8 +42,9 @@ module.exports = {
     // path: 'friends',
     //   // Get friends of friends - populate the 'friends' array for every friend
     //   populate: { path: 'friends' }
-    Question.find({}).sort({ created_at: 'descending'}).limit(20).populate({ path:'answers', populate: { path: 'userId' } }).populate('userId')
+    Question.find({}).sort({ created_at: -1}).limit(20).populate({ path:'answers', populate: { path: 'userId' } }).populate('userId').populate('tags')
       .then(function(questions) {
+        // console.log(questions)
         res
           .status(200)
           .json({ data : questions })
@@ -53,7 +59,7 @@ module.exports = {
 
   findOne: function(req, res) { // findOne
 
-    Question.findById(req.params.id).populate({ path: 'answers', populate: { path: 'userId' } }).populate('userId')
+    Question.findById(req.params.id).populate({ path: 'answers', populate: { path: 'userId' } }).populate('userId').populate('tags')
       .then(function(question) {
         if(!question) {
           res
@@ -101,7 +107,7 @@ module.exports = {
             question.votes.splice(index,1)
           }
         }
-  
+        console.log(question)
         return question.save({ new: true })
       })
       .then(function(question) {
@@ -125,14 +131,23 @@ module.exports = {
     let input = {
       title: req.body.title,
       content: req.body.content,
+      tags: req.body.tags,
     }
   
     // console.log(input)
-    Question.findOneAndUpdate({ _id: req.params.id }, input, { new: true, runValidators: true })
+    let updatedQuestion = null
+    Tag.updateMany({ _id: { $in: req.body.tags }}, { $pull: { 'questions': newQuestion._id }})
+      .then(function() {
+        return Question.findOneAndUpdate({ _id: req.params.id }, input, { new: true, runValidators: true })
+      })
       .then(function(question) {
+        updatedQuestion = question
+        return Tag.updateMany({ _id: { $in: req.body.tags }}, { $push: { 'questions': question._id }});
+      })
+      .then(function() {
         res
           .status(200)
-          .json({ message: 'updated question successfully', data: question })
+          .json({ message: 'updated question successfully', data: updatedQuestion })
       })
       .catch(function(error) {
         validationMessage(error, res)
@@ -157,5 +172,24 @@ module.exports = {
           .status(500)
           .json({ message: 'internal server error'})
       })
+  },
+
+  questionByTag: function(req, res) {
+
+    let id = mongoose.Types.ObjectId(req.params.tagId)
+    Tag
+      .find({ tags: id })
+      // .sort({ created_at: -1})
+      // .limit(20)
+      // .populate({ path:'answers', populate: { path: 'userId' } })
+      // .populate('userId')
+      // .populate('tags')
+      .then(function(questions) {
+        res.status(200).json(questions)
+      })
+      .catch(function(err) {
+        console.log(err)
+        res.status(500).json({ message: 'internal server error' })
+      });
   },
 }

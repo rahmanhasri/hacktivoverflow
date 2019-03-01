@@ -20,9 +20,6 @@ export default {
   components: {
     Sidebar, Navbar,
   },
-  created() {
-    this.$store.dispatch('getQuestions');
-  },
 };
 </script>
 

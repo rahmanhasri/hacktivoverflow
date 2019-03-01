@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@johmun/vue-tags-input": "^2.0.1",
     "@vue/eslint-config-airbnb": "^4.0.0",
     "axios": "^0.18.0",
     "buefy": "^0.7.2",
@@ -15,7 +16,8 @@
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
     "vue2-editor": "^2.6.6",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "webpack": "^4.25.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",

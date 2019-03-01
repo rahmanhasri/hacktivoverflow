@@ -11,6 +11,7 @@ export default new Vuex.Store({
     isLoading: false,
     questions: [],
     questionDetail: {},
+    questionsByTag: [],
   },
   mutations: {
     loginSuccess(state) {
@@ -36,7 +37,7 @@ export default new Vuex.Store({
       state.questionDetail.answers.push(value);
     },
     voteAnswer(state, updatedAnswer) {
-      console.log(updatedAnswer.index);
+      // console.log(updatedAnswer.index);
       state.questionDetail.answers.splice(updatedAnswer.index, 1, updatedAnswer);
     },
     updateQuestion(state, updatedQuestion) {
@@ -48,11 +49,11 @@ export default new Vuex.Store({
       state.questionDetail.answers.splice(updatedAnswer.index, 1, updatedAnswer);
     },
     deleteQuestion(state, id) {
-      console.log(typeof state.questions[0]._id)
-      // const index = state.questions.findIndex(question => question._id == id);
-      // if (index !== -1) {
-      //   state.questions.splice(index, 1);
-      // }
+      // console.log(typeof state.questions[0]._id)
+      const index = state.questions.findIndex(question => question._id == id);
+      if (index !== -1) {
+        state.questions.splice(index, 1);
+      }
     },
   },
   actions: {
@@ -71,6 +72,21 @@ export default new Vuex.Store({
           commit('loading', false);
           console.error('ERR: ', error.message);
         });
+    },
+    getQuestionsTag({ commit }, id) {
+      commit('loading', true)
+      guest({
+        method: 'get',
+        url: `/questions/tag/${id}`,
+      })
+        .then(({ data }) => {
+          commit('loading', false);
+          commit('loadQuestionsTag', data);
+          console.log(data.data)
+        })
+    },
+    searchTag(id) {
+      console.log(id)
     },
   },
 });

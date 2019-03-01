@@ -15,7 +15,7 @@
                   </a>
                 </div>
                 <div>
-                  <span>{{ voteCount() }}</span>
+                  <span v-if="question.votes">{{ voteCount() }}</span>
                 </div>
                 <div>
                   <a @click.prevent="voteThis(question, -1)" class="has-text-info">
@@ -38,12 +38,17 @@
                   voluptatibus deserunt beatae iure minus expedita est aperiam maiores
                   laborum cum consectetur minima, incidunt velit! Ab.
                   <p v-html="question.content"></p>
+                <footer>
+                  <b-tag type="is-warning" v-for="(tag, index) in question.tags" :key="index">
+                    <a @click.prevent="">{{tag.name}}</a>
+                  </b-tag>
+                </footer>
                 </div>
               </article>
             </div>
             <footer>
               <article class="media order">
-                <figure class="media-left">
+                <figure class="media-left" v-if="question.userId">
                   <p class="is-size-7" v-if="isAuthorize">
                     <a @click.prevent="editQuestion"
                       href="" class="button is-warning is-size-7">
@@ -58,7 +63,7 @@
                 <div class="media-content">
                   </div>
                 <div class="media-right">
-                  <p class="is-size-7">
+                  <p class="is-size-7" v-if="question.userId">
                     by @{{ question.userId.name }}.
                     {{ displayDate(question.created_at) }}
                   </p>
@@ -70,7 +75,7 @@
       </section>
       <div class="columns">
         <div class="column has-background-grey-white-ter">
-          <p class="is-pulled-left is-size-4">
+          <p v-if="question.answers" class="is-pulled-left is-size-4">
             <strong>
               {{ question.answers.length }} Answers
             </strong>
@@ -132,10 +137,10 @@ export default {
         } else {
           // this.question = data.data;
           // this.answers = data.data.answers;
-          this.$store.commit('loadDetail', data.data);
           console.log(data.data);
+          this.$store.commit('loadDetail', data.data);
+          this.$store.commit('loading', false);
         }
-        this.$store.commit('loading', false);
       })
       .catch(({ response }) => {
         console.log(response.data.message);
@@ -147,19 +152,20 @@ export default {
     displayDate(date) {
       return getDate(date);
     },
+    voteCount() {
+      let total = 0;
+      // console.log(this.question.votes,'==============')
+      if (this.question.votes.length) {
+          this.question.votes.forEach((vote) => {
+            total += vote.status;
+          });
+      }
+      return total;
+    },
     dismiss() {
       this.editor = false;
       this.edit = false;
       this.editPost = {};
-    },
-    voteCount() {
-      let total = 0;
-      if (this.question.votes.length) {
-        this.question.votes.forEach((vote) => {
-          total += vote.status;
-        });
-      }
-      return total;
     },
     voteThis(obj, value) {
       this.$store.commit('loading', true);
@@ -193,6 +199,7 @@ export default {
       this.editor = 'question';
       this.editPost.title = this.question.title;
       this.editPost.content = this.question.content;
+      this.editPost.tags = this.question.tags;
       this.edit = true;
     },
     deleteQuestion() {

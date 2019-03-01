@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-// const Answer = require('./answer')
-
 const QuestionSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   title: {
@@ -14,6 +12,7 @@ const QuestionSchema = new Schema({
   },
   created_at: {
     type: Date,
+    default: Date.now,
   },
   votes: [{
     userId: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -23,9 +22,8 @@ const QuestionSchema = new Schema({
   answers: [{
     type: Schema.Types.ObjectId, ref: 'Answer'
   }],
-  tags: [String]
+  tags: [{type: Schema.Types.ObjectId, ref: 'Tag'}]
 })
-
 
 const Question = mongoose.model('Question', QuestionSchema);
 

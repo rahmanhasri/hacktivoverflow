@@ -31,7 +31,11 @@
           <div>
             <article class="media order">
               <figure class="media-left"><p class="is-size-7">
-              Tag
+                <b-taglist>
+                  <b-tag type="is-warning" v-for="(tag, index) in question.tags" :key="index">
+                    <a @click.prevent="seeTag(tag._id)">{{tag.name}}</a>
+                  </b-tag>
+                </b-taglist>
               </p></figure>
               <div class="media-content"></div>
               <div class="media-right"><p class="is-size-7">
@@ -59,6 +63,9 @@ export default {
   methods: {
     toDetail() {
       this.$router.push(`/questions/${this.question._id}`);
+    },
+    seeTag(id) {
+      this.$store.dispatch(`searchTag`, id);
     },
   },
 };

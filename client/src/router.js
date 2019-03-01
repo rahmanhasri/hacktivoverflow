@@ -27,6 +27,18 @@ export default new Router({
           name: 'questions',
           component: () => import('./views/QuestionDetail.vue'),
         },
+        {
+          path: '/tag/:name',
+          name: 'tag',
+          component: () => import(''),
+        },
+        {
+          path: '*',
+          name: 'redirect-nested',
+          beforeEnter: (to, from, next) => {
+            next('/')
+          }
+        }
       ],
     },
     {
@@ -41,6 +53,13 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: () => import('./views/RegisterForm.vue'),
+    },
+    {
+      path: '*',
+      name: 'not-found',
+      beforeEnter: (to, from, next) => {
+        next('/')
+      }
     },
   ],
 });
