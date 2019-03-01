@@ -5,7 +5,10 @@ var logger = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const indexRouter = require('./routes/index');
-// const weekly = require('./helpers/weeklyReminder')
+const weekly = require('./helpers/weeklyReminder')
+const kue = require('kue')
+const queue = kue.createQueue();
+const mailer = require('./helpers/nodemailer')
 
 var app = express();
 
@@ -19,6 +22,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-// weekly.reminder()
+weekly.reminder()
+queue.process('email-reminder', (job,done) => {
+  console.log(job.data);
+  // mailer(job.data.email)
+  done()
+})
+
+kue.app.listen(3001)
 
 module.exports = app;
