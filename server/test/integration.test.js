@@ -205,6 +205,7 @@ describe('ALL TEST', function() {
     let input = {
       title: 'Judul harus 10?',
       content: 'deskripsi harus sepanjang 20 karakter?',
+      tags: [],
     }
     it('should be send message a question has created successfully', function(done) {
       
@@ -215,6 +216,7 @@ describe('ALL TEST', function() {
         .send(input)
         .set('token', token)
         .end(function(err, res) {
+          console.log(res.body)
           expect(err).to.be.null
           expect(res).to.have.status(201)
           expect(res.body).to.have.property('message')
@@ -245,7 +247,8 @@ describe('ALL TEST', function() {
 
       let input2 = {
         title: 'pendek',
-        content: '........................................', 
+        content: '........................................',
+        tags: [],
       }
       // done()
       chai
@@ -363,7 +366,7 @@ describe('ALL TEST', function() {
 
       chai
         .request(app)
-        //patch.put(`/questions/${questionIdtoUpdate}?vote=1`)
+        .patch(`/questions/${questionIdtoUpdate}?vote=1`)
         .end(function(err, res) {
           expect(err).to.be.null
           expect(res).to.have.status(400)
@@ -378,7 +381,8 @@ describe('ALL TEST', function() {
 
       let input = {
         title: 'minimum 10 karakter?',
-        content: 'minimum 20 karakter sepanjang jalan kenangan'
+        content: 'minimum 20 karakter sepanjang jalan kenangan',
+        tags: []
       }
 
       chai
@@ -402,7 +406,8 @@ describe('ALL TEST', function() {
 
       let input = {
         title: 'minimum 10 karakter?',
-        content: 'masa sih?'
+        content: 'masa sih?',
+        tags: [],
       }
 
       chai
@@ -510,9 +515,9 @@ describe('ALL TEST', function() {
           expect(err).to.be.null
           expect(res).to.have.status(200)
           expect(res.body).to.have.property('data')
-          expect(res.body.data[0]).to.have.property('answers')
-          expect(res.body.data[0].answers).to.have.length(1)
-          expect(res.body.data[0].answers[0]).to.be.an('object')
+          expect(res.body.data[1]).to.have.property('answers')
+          expect(res.body.data[1].answers).to.have.length(1)
+          expect(res.body.data[1].answers[0]).to.be.an('object')
           done()
         })
     })
