@@ -3,24 +3,24 @@
     <div class="column">
       <article class="media order">
         <figure class="media-left">
-            <div class="columns">
-              <div class="column has-text-centered">
-                <div>
-                  <span>{{ question.votes.length }}</span>
-                </div>
-                <div>
-                  <span>votes</span>
-                </div>
+          <div class="columns">
+            <div class="column has-text-centered">
+              <div>
+                <span>{{ question.votes.length }}</span>
               </div>
-              <div class="column has-text-centered">
-                <div>
-                  <span>{{ question.answers.length }}</span>
-                </div>
-                <div>
-                  <span>answer</span>
-                </div>
+              <div>
+                <span>votes</span>
               </div>
             </div>
+            <div class="column has-text-centered">
+              <div>
+                <span>{{ question.answers.length }}</span>
+              </div>
+              <div>
+                <span>answer</span>
+              </div>
+            </div>
+          </div>
         </figure>
         <div class="media-content">
           <div>
@@ -30,21 +30,29 @@
           </div>
           <div>
             <article class="media order">
-              <figure class="media-left"><p class="is-size-7">
-                <b-taglist>
-                  <b-tag type="is-warning" v-for="(tag, index) in question.tags" :key="index">
-                    <a @click.prevent="seeTag(tag._id)">{{tag.name}}</a>
-                  </b-tag>
-                </b-taglist>
-              </p></figure>
+              <figure class="media-left">
+                <p class="is-size-7">
+                  <b-taglist>
+                    <b-tag
+                      type="is-warning"
+                      v-for="(tag, index) in question.tags"
+                      :key="index"
+                    >
+                      <a @click.prevent="seeTag(tag._id, tag.name)">{{ tag.name }}</a>
+                    </b-tag>
+                  </b-taglist>
+                </p>
+              </figure>
               <div class="media-content"></div>
-              <div class="media-right"><p class="is-size-7">
-              by @{{question.userId.name}}. {{ displayDate }}
-              </p></div>
+              <div class="media-right">
+                <p class="is-size-7">
+                  by @{{ question.userId.name }}. {{ displayDate }}
+                </p>
+              </div>
             </article>
           </div>
         </div>
-    </article>
+      </article>
     </div>
   </div>
 </template>
@@ -64,8 +72,9 @@ export default {
     toDetail() {
       this.$router.push(`/questions/${this.question._id}`);
     },
-    seeTag(id) {
-      this.$store.dispatch(`searchTag`, id);
+    seeTag(id, name) {
+      this.$store.dispatch('getQuestionsTag', id);
+      this.$router.push(`/tag/${name}`);
     },
   },
 };

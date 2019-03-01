@@ -3,8 +3,8 @@ const queue = kue.createQueue();
 const cron = require('node-cron');
 const User = require('../models/user');
 const Question =require('../models/question');
-// const everySunday = '0 10 * * 0';
-const everySunday = '* * * * *';
+const everySunday = '0 10 * * 0';
+//const everySunday = '* * * * *';
 let sendEmailsTo = [];
 let emails = [];
 require('dotenv').config()

@@ -21,9 +21,9 @@ module.exports = {
         newQuestion = question;
         return User.findByIdAndUpdate(req.headers.id,{  $push: { 'posts': question } });
       })
-      .then(function() {
-        return Tag.updateMany({ _id: { $in: req.body.tags }}, { $push: { 'questions': newQuestion._id }});
-      })
+      // .then(function() {
+      //   return Tag.updateMany({ _id: { $in: req.body.tags }}, { $push: { 'questions': newQuestion._id }});
+      // })
       .then(function() {
         return newQuestion.populate('userId').populate('tags').execPopulate()
       })
@@ -135,19 +135,15 @@ module.exports = {
     }
   
     // console.log(input)
-    let updatedQuestion = null
-    Tag.updateMany({ _id: { $in: req.body.tags }}, { $pull: { 'questions': newQuestion._id }})
-      .then(function() {
-        return Question.findOneAndUpdate({ _id: req.params.id }, input, { new: true, runValidators: true })
-      })
+    // let updatedQuestion = null
+    // Tag.updateMany({ _id: { $in: req.body.tags }}, { $pull: { 'questions': newQuestion._id }})
+      // .then(function() {
+    Question.findOneAndUpdate({ _id: req.params.id }, input, { new: true, runValidators: true }).populate({ path: 'answers', populate: { path: 'userId' } }).populate('userId').populate('tags')
+      // })
       .then(function(question) {
-        updatedQuestion = question
-        return Tag.updateMany({ _id: { $in: req.body.tags }}, { $push: { 'questions': question._id }});
-      })
-      .then(function() {
         res
           .status(200)
-          .json({ message: 'updated question successfully', data: updatedQuestion })
+          .json({ message: 'updated question successfully', data: question })
       })
       .catch(function(error) {
         validationMessage(error, res)
@@ -174,16 +170,14 @@ module.exports = {
       })
   },
 
-  questionByTag: function(req, res) {
+  questionByTagId: function(req, res) {
 
-    let id = mongoose.Types.ObjectId(req.params.tagId)
-    Tag
-      .find({ tags: id })
-      // .sort({ created_at: -1})
-      // .limit(20)
-      // .populate({ path:'answers', populate: { path: 'userId' } })
-      // .populate('userId')
-      // .populate('tags')
+    // let id = mongoose.Types.ObjectId(req.params.tagId)
+    Question
+      .find({ tags: req.params.tagId })
+      .populate({ path: 'answers', populate: { path: 'userId' } })
+      .populate('userId')
+      .populate('tags')
       .then(function(questions) {
         res.status(200).json(questions)
       })
@@ -191,5 +185,9 @@ module.exports = {
         console.log(err)
         res.status(500).json({ message: 'internal server error' })
       });
+  },
+
+  questionByTagName: function(req, res) {
+
   },
 }

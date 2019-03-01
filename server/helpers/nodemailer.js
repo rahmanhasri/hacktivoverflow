@@ -6,7 +6,7 @@ function mailNotifications(targetEmail) {
   var smtpTransport = nodemailer.createTransport({
       service: "gmail",
       auth: {
-          user: "underflowmaman@gmail.com",
+          user: process.env.EMAIL,
           pass: process.env.EMAILPASS,
       }
   });

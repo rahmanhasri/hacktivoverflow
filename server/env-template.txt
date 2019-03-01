@@ -1,0 +1,3 @@
+JWT_SECRET=
+EMAIL=<your gmail to send email per weekly>
+EMAILPASS=<your gmail password>

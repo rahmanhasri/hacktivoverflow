@@ -1,32 +1,31 @@
 <template>
-      <div class="main">
-        <a @click.prevent="$router.push('/')" href="" class="item">
-          <span class="icon">
-            <i class="fa fa-inbox"></i>
-          </span>
-          <span class="name">Home</span>
-        </a>
-      </div>
+  <div class="main">
+    <a @click.prevent="$router.push('/')" href="" class="item">
+      <span class="icon">
+        <i class="fa fa-inbox"></i>
+      </span>
+      <span class="name">Home</span>
+    </a>
+  </div>
 </template>
 
 <script>
-export default {
-};
+export default {};
 </script>
 
 <style>
 .aside {
-  display:block;
-  background-color: #F9F9F9;
-  border-right: 1px solid #DEDEDE;
+  display: block;
+  background-color: #f9f9f9;
+  border-right: 1px solid #dedede;
 }
 .aside .compose {
   height: 95px;
-  margin:0 -10px;
+  margin: 0 -10px;
   padding: 25px 30px;
 }
 .aside .compose .button {
-  color: #F6F7F7;
+  color: #f6f7f7;
 }
 .aside .compose .button .compose {
   font-size: 14px;
@@ -34,10 +33,10 @@ export default {
 }
 .aside .main {
   padding: 40px;
-  color: #6F7B7E;
+  color: #6f7b7e;
 }
 .aside .title {
-  color: #6F7B7E;
+  color: #6f7b7e;
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
@@ -45,27 +44,27 @@ export default {
 .aside .main .item {
   display: block;
   padding: 10px 0;
-  color: #6F7B7E;
+  color: #6f7b7e;
 }
 .aside .main .item.active {
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   margin: 0 -50px;
   padding-left: 50px;
 }
-.aside .main .item:active,.aside .main .item:hover {
-  background-color: #F2F2F2;
+.aside .main .item:active,
+.aside .main .item:hover {
+  background-color: #f2f2f2;
   margin: 0 -50px;
   padding-left: 50px;
 }
 .aside .main .icon {
   font-size: 19px;
   padding-right: 30px;
-  color: #A0A0A0;
+  color: #a0a0a0;
 }
 .aside .main .name {
   font-size: 15px;
-  color: #5D5D5D;
+  color: #5d5d5d;
   font-weight: 500;
 }
-
 </style>

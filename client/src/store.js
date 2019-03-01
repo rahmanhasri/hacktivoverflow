@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import guest from '@/api/underflowGuest';
-// import user from '@/api/underflowUser';
+import user from '@/api/underflowUser';
 
 Vue.use(Vuex);
 
@@ -12,6 +12,7 @@ export default new Vuex.Store({
     questions: [],
     questionDetail: {},
     questionsByTag: [],
+    userTags: [],
   },
   mutations: {
     loginSuccess(state) {
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     loadQuestions(state, value) {
       state.questions = value;
     },
+    loadQuestionsTag(state, value) {
+      state.questionsByTag = value;
+    },
     loadDetail(state, value) {
       state.questionDetail = value;
     },
@@ -38,7 +42,11 @@ export default new Vuex.Store({
     },
     voteAnswer(state, updatedAnswer) {
       // console.log(updatedAnswer.index);
-      state.questionDetail.answers.splice(updatedAnswer.index, 1, updatedAnswer);
+      state.questionDetail.answers.splice(
+        updatedAnswer.index,
+        1,
+        updatedAnswer,
+      );
     },
     updateQuestion(state, updatedQuestion) {
       state.questionDetail.title = updatedQuestion.title;
@@ -46,15 +54,24 @@ export default new Vuex.Store({
       state.questionDetail.tags = updatedQuestion.tags;
     },
     updateAnswer(state, updatedAnswer) {
-      state.questionDetail.answers.splice(updatedAnswer.index, 1, updatedAnswer);
+      state.questionDetail.answers.splice(
+        updatedAnswer.index,
+        1,
+        updatedAnswer,
+      );
     },
     deleteQuestion(state, id) {
       // console.log(typeof state.questions[0]._id)
-      const index = state.questions.findIndex(question => question._id == id);
+      const index = state.questions.findIndex((question) => {
+        return question._id.toString() === id.toString();
+      });
       if (index !== -1) {
         state.questions.splice(index, 1);
       }
     },
+    loadUserTag(state, data) {
+      state.userTags = data;
+    }
   },
   actions: {
     getQuestions({ commit }) {
@@ -70,23 +87,38 @@ export default new Vuex.Store({
         })
         .catch((error) => {
           commit('loading', false);
-          console.error('ERR: ', error.message);
+          console.error('ERR:', error.message);
         });
     },
     getQuestionsTag({ commit }, id) {
-      commit('loading', true)
+      commit('loading', true);
       guest({
         method: 'get',
         url: `/questions/tag/${id}`,
       })
         .then(({ data }) => {
-          commit('loading', false);
           commit('loadQuestionsTag', data);
-          console.log(data.data)
+          commit('loading', false);
+          console.log(data);
         })
+        .catch((err) => {
+          commit('loading', false);
+          console.log(err);
+        });
     },
-    searchTag(id) {
-      console.log(id)
-    },
+    getUserTag({ commit }) {
+      commit('loading', true);
+      user({
+        method: 'get',
+        url: '/users/tag',
+      })
+        .then(({ data }) => {
+          commit('loading', false);
+          commit('loadUserTag', data)
+        })
+        .catch(err => {
+          console.log(err)
+        });
+    }
   },
 });

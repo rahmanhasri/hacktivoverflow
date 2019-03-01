@@ -1,12 +1,14 @@
 <template>
-  <section  class="section box">
+  <section class="section box">
     <article class="media order">
       <figure class="media-left">
         <div class="columns">
           <div class="column has-text-centered">
             <div>
               <a @click.prevent="voteAnswers(answer, 1)" class="has-text-info">
-                <span class="mdi mdi-arrow-up-drop-circle-outline mdi-36px"></span>
+                <span
+                  class="mdi mdi-arrow-up-drop-circle-outline mdi-36px"
+                ></span>
               </a>
             </div>
             <div>
@@ -14,7 +16,9 @@
             </div>
             <div>
               <a @click.prevent="voteAnswers(answer, -1)" class="has-text-info">
-                <span class="mdi mdi-arrow-down-drop-circle-outline mdi-36px"></span>
+                <span
+                  class="mdi mdi-arrow-down-drop-circle-outline mdi-36px"
+                ></span>
               </a>
             </div>
           </div>
@@ -23,13 +27,12 @@
       <div class="media-content">
         <div class="level-item">
           <article class="media order">
-            <div
-              class="media-content" style="margin-left: 10px;">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Dolor quod, dolorum eveniet possimus itaque,
-              voluptatibus deserunt beatae iure minus expedita est aperiam maiores
-              laborum cum consectetur minima, incidunt velit! Ab.
-            <p v-html="answer.content"></p>
+            <div class="media-content" style="margin-left: 10px;">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor
+              quod, dolorum eveniet possimus itaque, voluptatibus deserunt
+              beatae iure minus expedita est aperiam maiores laborum cum
+              consectetur minima, incidunt velit! Ab.
+              <p v-html="answer.content"></p>
             </div>
           </article>
         </div>
@@ -37,17 +40,20 @@
           <article class="media order">
             <figure class="media-left">
               <p class="is-size-7" v-if="isAuthorize">
-                <a @click.prevent="editAnswer()"
-                  href="" class="button is-warning is-size-7">
-                edit
+                <a
+                  @click.prevent="editAnswer()"
+                  href=""
+                  class="button is-warning is-size-7"
+                >
+                  edit
                 </a>
               </p>
             </figure>
-            <div class="media-content">
-              </div>
+            <div class="media-content"></div>
             <div class="media-right">
               <p class="is-size-7">
-                by @{{ answer.userId.name }}. {{ displayDate(answer.created_at) }}
+                by @{{ answer.userId.name }}.
+                {{ displayDate(answer.created_at) }}
               </p>
             </div>
           </article>

@@ -9,15 +9,17 @@
           <!-- Left side -->
           <div class="level-left">
             <div class="level-item">
-              <p class="subtitle is-4">
-                <strong>Hot</strong> Questions
-              </p>
+              <p class="subtitle is-4"><strong>Hot</strong> Questions</p>
             </div>
           </div>
 
           <div class="level-right">
             <p class="level-item">
-              <a @click.prevent="postQuestion" class="button is-danger is-size-7">Ask Question</a>
+              <a
+                @click.prevent="postQuestion"
+                class="button is-danger is-size-7"
+                >Ask Question</a
+              >
             </p>
           </div>
         </nav>
@@ -27,25 +29,26 @@
       <div class="column">
         <article class="media order shadow delivered">
           <figure class="media-left">
-              <p class="subtitle is-6">
-                9,001 questions
-              </p>
+            <p class="subtitle is-6">
+              9,001 questions
+            </p>
           </figure>
-          <div class="media-content">
-          </div>
+          <div class="media-content"></div>
           <div class="media-right">
-              <div class="tags has-addons">
-                <span class="tag is-dark is-size-7">Featured</span>
-                <span class="tag is-light is-size-7">Answered</span>
-              </div>
+            <div class="tags has-addons">
+              <span class="tag is-dark is-size-7">Featured</span>
+              <span class="tag is-light is-size-7">Answered</span>
+            </div>
           </div>
-      </article>
+        </article>
       </div>
     </div>
     <!-- component question v-for -->
-    <QuestionBox v-for="(question) in questions"
+    <QuestionBox
+      v-for="question in questions"
       :question="question"
-      :key="question._id">
+      :key="question._id"
+    >
     </QuestionBox>
     <!--  -->
   </div>
@@ -58,7 +61,8 @@ import QuestionBox from '@/components/Question.vue';
 
 export default {
   components: {
-    Loading, QuestionBox,
+    Loading,
+    QuestionBox,
   },
   methods: {
     postQuestion() {

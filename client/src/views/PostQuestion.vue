@@ -1,10 +1,10 @@
 <template>
   <!-- <div class="container is-centered"> -->
-    <div class="columns is-centered">
-      <div class="column">
-        <FormComponent :edit-post="{}" :editor="'question'"></FormComponent>
-      </div>
+  <div class="columns is-centered">
+    <div class="column">
+      <FormComponent :edit-post="{}" :editor="'question'"></FormComponent>
     </div>
+  </div>
   <!-- </div> -->
 </template>
 

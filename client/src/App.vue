@@ -2,11 +2,15 @@
   <div id="app">
     <Navbar />
     <div class="columns" style="flex">
-      <aside class="column is-2 aside hero is-fullheight" id="sidebar" style="height: 150vh;">
+      <aside
+        class="column is-2 aside hero is-fullheight"
+        id="sidebar"
+        style="height: 150vh;"
+      >
         <Sidebar />
       </aside>
       <div class="column is-7" style="height: 150vh;">
-        <router-view/>
+        <router-view />
       </div>
     </div>
   </div>
@@ -18,15 +22,16 @@ import Navbar from '@/components/Navbar.vue';
 
 export default {
   components: {
-    Sidebar, Navbar,
+    Sidebar,
+    Navbar,
   },
 };
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic');
+@import url("https://fonts.googleapis.com/css?family=Nanum+Gothic");
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -34,7 +39,7 @@ export default {
 }
 
 #logo {
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: "Nanum Gothic", sans-serif;
 }
 
 #sidebar {

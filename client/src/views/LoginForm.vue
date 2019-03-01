@@ -1,30 +1,43 @@
 <template>
-    <div class="columns is-centered" style="margin-top: 1em;">
-      <article class="card" v-if="loading">
-        <Loading></Loading>
-      </article>
-      <article class="card" v-else>
-        <div class="card-content">
-          <h1 class="title">
-            <img src="./../assets/nomad.jpg" alt="logo" width="300">
-          </h1>
-          <form @submit.prevent="submitLogin">
-            <p class="control has-icon" style="margin: 1em;">
-              <input class="input" type="email" placeholder="Email" v-model="email">
-            </p>
-            <p class="control has-icon" style="margin: 1em;">
-              <input class="input" type="password" placeholder="Password" v-model="password">
-            </p>
-            <p class="control" style="margin: 1em;">
-              <button type="submit" class="button is-danger is-medium is-fullwidth">
-                <i class="fa fa-user"></i>
-                Login
-              </button>
-            </p>
-          </form>
-        </div>
-      </article>
-    </div>
+  <div class="columns is-centered" style="margin-top: 1em;">
+    <article class="card" v-if="loading">
+      <Loading></Loading>
+    </article>
+    <article class="card" v-else>
+      <div class="card-content">
+        <h1 class="title">
+          <img src="./../assets/nomad.jpg" alt="logo" width="300" />
+        </h1>
+        <form @submit.prevent="submitLogin">
+          <p class="control has-icon" style="margin: 1em;">
+            <input
+              class="input"
+              type="email"
+              placeholder="Email"
+              v-model="email"
+            />
+          </p>
+          <p class="control has-icon" style="margin: 1em;">
+            <input
+              class="input"
+              type="password"
+              placeholder="Password"
+              v-model="password"
+            />
+          </p>
+          <p class="control" style="margin: 1em;">
+            <button
+              type="submit"
+              class="button is-danger is-medium is-fullwidth"
+            >
+              <i class="fa fa-user"></i>
+              Login
+            </button>
+          </p>
+        </form>
+      </div>
+    </article>
+  </div>
 </template>
 
 <script>

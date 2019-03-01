@@ -45,7 +45,8 @@ const UserSchema = new Schema({
     type: String,
     minlength: [6, "password must be at least 6 character long"]
   },
-  posts: [{type: Schema.Types.ObjectId, ref: 'Question'}]
+  posts: [{type: Schema.Types.ObjectId, ref: 'Question'}],
+  subscribes: [{ type: Schema.Types.ObjectId, ref: 'Tag'}]
 })
 
 UserSchema.pre('save', function(next) {

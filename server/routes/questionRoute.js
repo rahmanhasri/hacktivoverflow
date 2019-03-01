@@ -7,7 +7,7 @@ router.post('/', isLogin, tagIdGenerator, questionController.create)
 
 router.get('/', questionController.getQuestions)
 
-router.get('/tag/:tagId', questionController.questionByTag)
+router.get('/tag/:tagId', questionController.questionByTagId)
 
 router.get('/:id', questionController.findOne)
 

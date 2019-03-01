@@ -7,13 +7,16 @@ const Tag = require('../models/tag')
 module.exports = {
   isLogin: function(req, res, next) {
     try {
+      // console.log(req.headers)
       let token = req.headers.token
+      // console.log(token)
       if(!token) {
         res
           .status(400)
           .json({ message : `you have to be login first`})
       } else {
         let tokenDecoded = tokenDecoder(token)
+        console.log(tokenDecoded)
         User.findOne({ email : tokenDecoded.email })
           .then( function(user) {
             if(!user) {
@@ -21,6 +24,7 @@ module.exports = {
                 .status(400)
                 .json({ message : `error with user login`})
             } else {
+              // console.log(user)
               req.headers.id = user.id
               next()
             }
@@ -30,7 +34,7 @@ module.exports = {
           })
       }
     } catch (err) {
-      // console.log(err)
+      console.log(err)
       res
         .status(500)
         .json({ message :`internal server error` })
@@ -40,14 +44,14 @@ module.exports = {
   isAuthorize: function(req, res, next) {
 
     // console.log(req.params.id)
-    Question.findById(req.params.id)
+    Question.findOne({ _id: req.params.id })
       .then(function(question) {
         if(!question) {
           res
             .status(400)
             .json({ message: 'there is no question with that id'})
         } else {
-          // console.log(']]]]]]]]]]]]]]]]]]]]]]]]]]]]', question, req.headers.id)
+          console.log(']]]]]]]]]]]]]]]]]]]]]]]]]]]]', question.userId, req.headers.id)
           if((question.userId).toString() != (req.headers.id).toString()) {
             res
               .status(400)
@@ -92,6 +96,7 @@ module.exports = {
 
   tagIdGenerator: function(req, res, next) {
   
+    // console.log(req.body)
     req.body.tags = req.body.tags.map(tag => tag.text)
     let tagPromises = []
     let output = []

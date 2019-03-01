@@ -3,7 +3,12 @@
     <!-- <p class="subtitle is-4">Ask a Question</p> -->
     <div class="field" v-if="editor === 'question'">
       <div class="control">
-        <input class="input" type="text" placeholder="Question Title" v-model="title">
+        <input
+          class="input"
+          type="text"
+          placeholder="Question Title"
+          v-model="title"
+        />
       </div>
     </div>
     <div class="field">
@@ -13,39 +18,45 @@
       <vue-tags-input
         v-model="tag"
         :tags="tags"
-        @tags-changed="newTags => tags = newTags"
+        @tags-changed="newTags => (tags = newTags)"
       />
     </div>
     <div class="field">
       <!-- update question -->
-      <button @click.prevent="editQuestion"
+      <button
+        @click.prevent="editQuestion"
         class="is-medium button is-warning"
-        v-if="edit && editor === 'question'">
-          Edit Question
+        v-if="edit && editor === 'question'"
+      >
+        Edit Question
       </button>
       <!-- update answer -->
-      <button @click.prevent="editAnswer"
+      <button
+        @click.prevent="editAnswer"
         class="is-medium button"
-        v-else-if="edit && editor === 'answer'">
-          Edit Answer
+        v-else-if="edit && editor === 'answer'"
+      >
+        Edit Answer
       </button>
       <!-- submit question -->
-      <button @click.prevent="submitQuestion"
+      <button
+        @click.prevent="submitQuestion"
         class="is-medium button is-danger"
-        v-else-if="editor === 'question'">
-          Submit
+        v-else-if="editor === 'question'"
+      >
+        Submit
       </button>
       <!-- submit answer -->
-      <button @click.prevent="submitAnswer"
+      <button
+        @click.prevent="submitAnswer"
         class="is-medium button is-success"
-        v-else>
-          Submit
+        v-else
+      >
+        Submit
       </button>
-      <button @click.prevent="dismissEditor"
-        class="is-medium button is-link">
-          Dismiss
+      <button @click.prevent="dismissEditor" class="is-medium button is-link">
+        Dismiss
       </button>
-
     </div>
   </form>
 </template>
@@ -59,7 +70,8 @@ import VueTagsInput from '@johmun/vue-tags-input';
 export default {
   name: 'form-component',
   components: {
-    VueTagsInput, VueEditor,
+    VueTagsInput,
+    VueEditor,
   },
   props: ['edit-post', 'editor', 'edit'],
   data() {
@@ -159,10 +171,13 @@ export default {
     editQuestion() {
       const id = this.$store.state.questionDetail._id;
       if (this.content.length < 20) {
-        swal('Minimum content is 20 characters & minimum title is 10 characters', {
-          timer: 1750,
-          button: true,
-        });
+        swal(
+          'Minimum content is 20 characters & minimum title is 10 characters',
+          {
+            timer: 1750,
+            button: true,
+          },
+        );
       } else {
         this.$store.commit('loading', true);
         user({
@@ -171,6 +186,7 @@ export default {
           data: {
             title: this.title,
             content: this.content,
+            tags: this.tags,
           },
         })
           .then(({ data }) => {
@@ -180,9 +196,10 @@ export default {
               timer: 1750,
               button: false,
             });
+            this.clearForm();
           })
           .catch(({ response }) => {
-            console.log(response.data);
+            // console.log(response.data);
             this.$store.commit('loading', false);
             const warning = response.data.message || response.statusText;
             swal(warning, {

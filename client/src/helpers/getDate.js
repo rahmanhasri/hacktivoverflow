@@ -14,6 +14,10 @@ export default function (date) {
     11: 'December',
   };
 
-  const time = new Date(date).toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, '$1$3');
-  return `${time}, ${new Date(date).getDate()} ${month[new Date(date).getMonth()]} ${new Date(date).getFullYear()}`;
+  const time = new Date(date)
+    .toLocaleTimeString()
+    .replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, '$1$3');
+  return `${time}, ${new Date(date).getDate()} ${
+    month[new Date(date).getMonth()]
+  } ${new Date(date).getFullYear()}`;
 }
